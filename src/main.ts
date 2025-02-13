@@ -1,94 +1,104 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import { getConfiguration } from './configuration';
+import * as vscode from "vscode";
+import * as path from "path";
+import { getConfiguration } from "./configuration";
 
 /**
  * @public
  */
 export const loadDisposables = (context: vscode.ExtensionContext) => {
-    const { languageFilter } = getConfiguration();
-
-    languageFilter.forEach(languageId => {
-        context.subscriptions.push(
-            vscode.languages.registerDocumentLinkProvider(
-                {language: languageId},
-                {
-                    provideDocumentLinks: documentLinkProvider
-                }
-            )
-        );
-    });
+  const { languageFilter } = getConfiguration();
+  //   const languageFilter = ["twig"];
+  languageFilter.forEach((languageId) => {
+    context.subscriptions.push(
+      vscode.languages.registerDocumentLinkProvider(
+        { language: languageId },
+        {
+          provideDocumentLinks: documentLinkProvider,
+        }
+      )
+    );
+  });
 };
 
 /**
  * @private
  */
-export const documentLinkProvider = (document: vscode.TextDocument, token: vscode.CancellationToken) => {
-    const regex = new RegExp(/[^'"]+\.twig/, 'gi');
-    const links: vscode.DocumentLink[] = [];
+export const documentLinkProvider = (
+  document: vscode.TextDocument,
+  token: vscode.CancellationToken
+) => {
+  const regex = new RegExp(/[^'"]+\.svelte/, "gi");
+  const links: vscode.DocumentLink[] = [];
 
-    for (let n = 0; n < document.lineCount; n++) {
-        const line = document.lineAt(n);
-        const matches = Array.from(line.text.matchAll(regex));
+  for (let n = 0; n < document.lineCount; n++) {
+    const line = document.lineAt(n);
+    const matches = Array.from(line.text.matchAll(regex));
 
-        if (matches.length === 0) {
-            continue;
-        }
-
-        matches.forEach(match => {
-            const theMatch = match[0];
-            const startPosition = line.text.lastIndexOf(theMatch);
-            const endPosition = startPosition + theMatch.length;
-
-            const range = new vscode.Range(
-                new vscode.Position(line.lineNumber, startPosition),
-                new vscode.Position(line.lineNumber, endPosition)
-            );
-
-            const file = path.normalize(resolveFile(theMatch));
-            const uri = vscode.Uri.file(file);
-            const link = new vscode.DocumentLink(
-                range,
-                uri
-            );
-
-            links.push(link);
-        });
+    if (matches.length === 0) {
+      continue;
     }
 
-    return links;
+    matches.forEach((match) => {
+      const theMatch = match[0];
+      const startPosition = line.text.lastIndexOf(theMatch);
+      const endPosition = startPosition + theMatch.length;
+
+      const range = new vscode.Range(
+        new vscode.Position(line.lineNumber, startPosition),
+        new vscode.Position(line.lineNumber, endPosition)
+      );
+
+      console.log({ theMatch });
+
+      const file = path.normalize(resolveFile(theMatch));
+      const uri = vscode.Uri.file(file);
+      const link = new vscode.DocumentLink(range, uri);
+
+      links.push(link);
+    });
+  }
+
+  return links;
 };
 
 /**
  * @private
  */
 export const resolveFile = (filePath: string): string => {
-    const configuration = getConfiguration();
-    filePath = path.normalize(filePath);
+  const configuration = getConfiguration();
+  filePath = path.normalize(filePath);
 
-    const matchExactNamespace = (filePath: string, nsLength: number, namespace: string) => {
-        return filePath.slice(0, nsLength + 1) === namespace + path.sep;
+  const matchExactNamespace = (
+    filePath: string,
+    nsLength: number,
+    namespace: string
+  ) => {
+    return filePath.slice(0, nsLength + 1) === namespace + path.sep;
+  };
+
+  for (const { namespace, folderPath } of configuration.loaderPaths) {
+    const nsLength = namespace.length;
+
+    if (nsLength === 0) {
+      return path.normalize(
+        `${configuration.workspacePath}/${folderPath}/${filePath}`
+      );
     }
 
-    for (const {namespace, folderPath} of configuration.loaderPaths) {
-        const nsLength = namespace.length;
-
-        if (nsLength === 0) {
-            return path.normalize(`${configuration.workspacePath}/${folderPath}/${filePath}`);
-        }
-
-        if (! matchExactNamespace(filePath, nsLength, namespace)) {
-            continue;
-        }
-
-        const filePathToResolve = filePath.replace(`${namespace}`, folderPath);
-
-        return path.normalize(`${configuration.workspacePath}/${filePathToResolve}`);
+    if (!matchExactNamespace(filePath, nsLength, namespace)) {
+      continue;
     }
 
-    let result = `${configuration.workspacePath}/`;
-    result += `${configuration.templatesRootPath}/`;
-    result += `${filePath}`;
+    const filePathToResolve = filePath.replace(`${namespace}`, folderPath);
 
-    return path.normalize(result);
+    return path.normalize(
+      `${configuration.workspacePath}/${filePathToResolve}`
+    );
+  }
+
+  let result = `${configuration.workspacePath}/`;
+  result += `${configuration.templatesRootPath}/`;
+  result += `${filePath}`;
+
+  return path.normalize(result);
 };

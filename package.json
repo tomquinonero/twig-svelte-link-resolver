@@ -27,15 +27,13 @@
         "twigLinkResolver.templatesRootPath": {
           "type": "string",
           "description": "The relative path to your twig templates folder",
-          "default": "templates",
+          "default": ".",
           "deprecationMessage": "Deprecated: Will be removed in the next version, please make sure to move your root path to the loaderPaths array"
         },
         "twigLinkResolver.languageFilter": {
           "type": "array",
           "description": "What languages are supported for the generated links",
           "default": [
-            "php",
-            "html",
             "twig"
           ],
           "items": {
