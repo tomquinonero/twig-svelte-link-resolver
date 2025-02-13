@@ -5,8 +5,13 @@ import { getConfiguration } from "./configuration";
 /**
  * @public
  */
+
+let output;
+
 export const loadDisposables = (context: vscode.ExtensionContext) => {
   const { languageFilter } = getConfiguration();
+  output = vscode.window.createOutputChannel("Twig Svelte Link Resolver");
+
   //   const languageFilter = ["twig"];
   languageFilter.forEach((languageId) => {
     context.subscriptions.push(
@@ -33,6 +38,9 @@ export const documentLinkProvider = (
   for (let n = 0; n < document.lineCount; n++) {
     const line = document.lineAt(n);
     const matches = Array.from(line.text.matchAll(regex));
+
+    // output.appendLine(JSON.stringify(matches));
+    // output.show();
 
     if (matches.length === 0) {
       continue;
