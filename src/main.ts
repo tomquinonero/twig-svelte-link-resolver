@@ -48,11 +48,6 @@ export const documentLinkProvider = (
         new vscode.Position(line.lineNumber, endPosition)
       );
 
-      let orange = vscode.window.createOutputChannel("Orange");
-      orange.appendLine("Heyy");
-      orange.appendLine(JSON.stringify(theMatch));
-      orange.show();
-
       const file = path.normalize(resolveFile(theMatch));
       const uri = vscode.Uri.file(file);
       const link = new vscode.DocumentLink(range, uri);
