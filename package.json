@@ -8,14 +8,14 @@
   ],
   "author": "Tom Quinonero",
   "license": "MIT-X11",
-  "version": "1.0.6",
+  "version": "0.1.3",
   "main": "./out/extension",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chaxwell/vscode-extension-twigLinkResolver"
+    "url": "https://github.com/tomquinonero/twig-svelte-link-resolver"
   },
-  "publisher": "Chaxwell",
+  "publisher": "TomQuinonero",
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -24,12 +24,12 @@
       "title": "Twig link resolver configuration",
       "order": 0,
       "properties": {
-        "twigLinkResolver.templatesRootPath": {
+        "twigSvelteLinkResolver.templatesRootPath": {
           "type": "string",
           "description": "The relative path to your svelte comnponents folder",
           "default": "."
         },
-        "twigLinkResolver.languageFilter": {
+        "twigSvelteLinkResolver.languageFilter": {
           "type": "array",
           "description": "What languages are supported for the generated links",
           "default": [
@@ -40,7 +40,7 @@
           },
           "uniqueItems": true
         },
-        "twigLinkResolver.loaderPaths": {
+        "twigSvelteLinkResolver.loaderPaths": {
           "type": "object",
           "description": "Allows you to specify multiple paths to your twig templates. Add an alias (eg. @App) bounded to a path (eg. src/AppBundle/Resources/views)",
           "default": {

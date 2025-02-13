@@ -7,7 +7,7 @@ This extension allows you to quickly open your svelte components in twig by clic
 
 ## Configuration
 
-Prepend the keys with the extension name : **TwigSvelteLinkResolver** (e.g. `TwigSvelteLinkResolver.templatesRootPath`)
+Prepend the keys with the extension name : **twigSvelteLinkResolver** (e.g. `twigSvelteLinkResolver.templatesRootPath`)
 
 <br>
 <table>
