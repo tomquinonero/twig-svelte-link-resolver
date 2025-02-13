@@ -9,4 +9,4 @@ type LoaderPath = { namespace: Namespace; folderPath: FolderRelativePath };
 type Namespace = string;
 type FolderRelativePath = string;
 
-export const EXTENSION_NAME = "BPSvelteTwigLinkResolver";
+export const EXTENSION_NAME = "TwigSvelteLinkResolver";

@@ -1,12 +1,13 @@
-# Twig link resolver
+# Twig Svelte link resolver
 
-This extension allows you to quickly open your twig file by clicking the links generated in your editor.
+This extension allows you to quickly open your svelte components in twig by clicking the links generated in your editor.
 
 <br>
 <br>
 
 ## Configuration
-Prepend the keys with the extension name : **twigLinkResolver** (e.g. `twigLinkResolver.templatesRootPath`)
+
+Prepend the keys with the extension name : **TwigSvelteLinkResolver** (e.g. `TwigSvelteLinkResolver.templatesRootPath`)
 
 <br>
 <table>
@@ -37,7 +38,7 @@ Prepend the keys with the extension name : **twigLinkResolver** (e.g. `twigLinkR
                 The relative path to your twig templates folder
             </td>
             <td style="text-decoration-line: line-through">
-                "templates"
+                "."
             </td>
             <td style="text-decoration-line: line-through">
                 any
@@ -53,8 +54,6 @@ Prepend the keys with the extension name : **twigLinkResolver** (e.g. `twigLinkR
             <td>
                 <pre>
 [
-    "php",
-    "html",
     "twig"
 ]
 </pre>
@@ -74,7 +73,7 @@ Prepend the keys with the extension name : **twigLinkResolver** (e.g. `twigLinkR
             <td>
                 <pre>
 {
-    "": "templates",
+    "": ".",
 }</pre>
             </td>
             <td>
@@ -87,17 +86,3 @@ Prepend the keys with the extension name : **twigLinkResolver** (e.g. `twigLinkR
 
 <br>
 <br>
-
-## Demo
-
-<br>
-
-### Navigating files
-<img src="./resources/img/demo-navigation.gif">
-<img src="./resources/img/demo-navigation-alias.gif">
-
-<br>
-<br>
-
-### Creating file
-<img src="./resources/img/demo-create-file.gif">
